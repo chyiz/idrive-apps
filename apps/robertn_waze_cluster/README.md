@@ -58,8 +58,15 @@ The app is in the head unit's display language.
 - **Show on:** where the map shows: **Cluster** (the default), **HUD
   (experimental)**, **Cluster and HUD (experimental)** or **Off**. The
   change is immediate. **Off** shows BMW's own content on both.
+- **Show when:** when the phone's map takes over: **Always** (the default,
+  whenever your phone sends its map), **Only when navigating on phone**
+  (keeps BMW's map until a route starts on CarPlay or Android Auto, and
+  returns to BMW's map when the route ends), or **Yield to BMW navigation**
+  (shows the phone's map from connection, except while BMW's built-in
+  navigation has an active route). The change is immediate.
 - **Own settings for this driver:** ticked, the current driver profile
-  keeps its own Show on, HUD size and HUD position.
+  keeps its own Show on, Show when, HUD size, HUD position and Keep HUD map
+  over BMW's pop-ups.
 - **Hide BMW's turn box:** ticked (the default), BMW's turn-by-turn box on
   the cluster is hidden while the map shows.
 - **Logs:** opens the Logs page (see below).
@@ -102,6 +109,8 @@ apply the change.
 | `Status: Failed`, `Partly patched` or `Changed by another tool` | [Report it](#logs-and-reporting-a-problem). |
 | `Cluster map: Off` | Check **Show on**: **Off** and **HUD (experimental)** keep the map off the cluster. Check that CarPlay's or Android Auto's Status is `Patched`. |
 | `Cluster map: Waiting for the phone` | Connect your phone. |
+| `Cluster map: Waiting for phone navigation` | **Show when** is set to **Only when navigating on phone**. Start a route on your phone, or change **Show when** to **Always**. |
+| `Cluster map: Yielding to BMW navigation` | **Show when** is set to **Yield to BMW navigation** and BMW's built-in navigation is guiding. Stop BMW's route, or change **Show when** to **Always**. |
 | `Cluster map: Waiting for the phone's map` | Start navigation on your phone. |
 | `Cluster map: Frozen` or `Stream lost` | Reconnect your phone: unplug it, or turn its Wi-Fi off and on. This can happen after you change the cluster's Central display area. |
 | The map never shows on the cluster | Set **Instrument cluster > Central display area** to **Map view**. With Route preview or Assisted Driving View the cluster's own content takes the centre. |

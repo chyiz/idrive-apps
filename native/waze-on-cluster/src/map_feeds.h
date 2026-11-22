@@ -46,12 +46,18 @@ namespace woc {
 class MapFeeds {
 public:
     /* base: the cluster's feed; cluster, hud: each on from the start, the
-     * HUD at hud_fps frames a second at most. */
-    MapFeeds(const FeedConfig &base, bool cluster, bool hud, unsigned hud_fps);
+     * HUD at hud_fps frames a second at most; map_mode: 0 always, 1 only
+     * when navigating on phone, 2 yield to BMW navigation. */
+    MapFeeds(const FeedConfig &base, bool cluster, bool hud, unsigned hud_fps, unsigned map_mode = 0);
 
     /* The cluster and the HUD on or off, each at once. */
     void set_cluster(bool on);
     void set_hud(bool on);
+    /* When the map shows (0-2) and active navigation states, at once. */
+    void set_mode(unsigned mode);
+    unsigned mode() const { return map_mode_; }
+    void set_nav(bool phone_nav, bool bmw_nav);
+    bool allowed() const;
     /* A feed takes frames: the cluster's, or the HUD's with its layer made
      * and not disabled. */
     bool wants_frames() const;
@@ -108,7 +114,9 @@ private:
 
     FeedConfig base_;
     unsigned hud_fps_;
+    unsigned map_mode_ = 0;
     bool cluster_on_, hud_on_;
+    bool phone_nav_ = false, bmw_nav_ = false;
     std::unique_ptr<MapFeed> cluster_, hud_;
     std::vector<uint8_t> copy_;   /* a picture on its way from one feed to the other */
     uint64_t id_ = 0;   /* the newest frame's */

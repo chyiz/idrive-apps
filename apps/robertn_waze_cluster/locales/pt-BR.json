@@ -94,6 +94,12 @@
     "2.4 GHz": "2,4 GHz",
     "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "O áudio pode falhar. No iPhone, desative e ative o Wi-Fi.",
     "Own settings for this driver": "Configurações próprias para este motorista",
-    "Keep HUD map over BMW's pop-ups": "Manter mapa no HUD sobre pop-ups da BMW"
+    "Keep HUD map over BMW's pop-ups": "Manter mapa no HUD sobre pop-ups da BMW",
+    "Show when": "Mostrar quando",
+    "Always": "Sempre",
+    "Only when navigating on phone": "Somente ao navegar no celular",
+    "Yield to BMW navigation": "Ceder à navegação BMW",
+    "Waiting for phone navigation": "Aguardando navegação do celular",
+    "Yielding to BMW navigation": "Cedendo à navegação BMW"
   }
 }

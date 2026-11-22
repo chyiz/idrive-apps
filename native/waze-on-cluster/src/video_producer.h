@@ -288,6 +288,7 @@ private:
     std::atomic<uint64_t> decoded_total_{0};
     std::atomic<bool> pictures_{true};
     std::atomic<bool> resumed_{false};   /* the next picture is the first since pictures were off */
+    std::atomic<bool> resume_picture_{false};   /* make a picture from the last skipped surface on resume */
     bool catching_up_ = false;           /* the last feed decoded without a picture to catch up (decode_mutex_) */
     PicturePace pace_;                   /* decode_mutex_ */
     std::atomic<unsigned> picture_fps_;  /* pace_'s rate (set_picture_fps), read without the lock */

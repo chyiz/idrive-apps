@@ -42,7 +42,7 @@ IMAGE   := cluster-render-build:$(shell cksum < $(CR)/docker/Dockerfile | cut -d
 DOCKER_IMAGE = docker image inspect $(IMAGE) >/dev/null 2>&1 || \
 	docker build -q --platform linux/amd64 -t $(IMAGE) $(CR)/docker
 CXXFLAGS = -std=c++14 -O2 -g -Wall -Wextra -Werror
-CPPFLAGS = -I. -Isrc -I$(KIT) -I$(CR)/include -Iabi/include -I$(CR)/src
+CPPFLAGS = -I. -Isrc -I$(KIT) -I$(CR)/include -Iabi/include -I$(CR)/src -isystem $(CR)/dcsm/third_party/vsomeip/interface
 
 T = $(BUILD)/target
 
@@ -52,7 +52,7 @@ VERSION := $(shell sed -n 's/^ *"version": *"\([^"]*\)".*/\1/p' component.json)
 # The capture, decode and map feed (own files), the kit's atlas, packing and
 # geometry, and the shared renderer's client.
 WOC_SRC = src/main.cpp src/refused.cpp src/video_producer.cpp src/freeze_watch.cpp src/alt_screen.cpp src/map_feed.cpp src/map_feeds.cpp src/atlas_scale.cpp src/control.cpp src/h264_source.cpp \
-          src/guide_setting.cpp src/map_state.cpp src/opt_in.cpp \
+          src/guide_setting.cpp src/map_state.cpp src/opt_in.cpp src/nav_watch.cpp src/nav_link.cpp \
           src/udp_source.cpp src/avb_source.cpp src/framing_probe.cpp src/rtp_h264.cpp src/sps_info.cpp \
           src/decoder_msdk.cpp src/nal_reader.cpp src/stream_health.cpp $(KIT)/map_geometry.cpp $(KIT)/yuv_atlas.cpp \
           $(KIT)/block_pack.cpp
@@ -66,7 +66,7 @@ CPP_TESTS = $(BUILD)/host/nal_reader_test $(BUILD)/host/rtp_h264_test $(BUILD)/h
 		$(BUILD)/host/alt_screen_test $(BUILD)/host/packet_queue_test \
 		$(BUILD)/host/stream_health_test $(BUILD)/host/source_crop_test \
 		$(BUILD)/host/map_rect_test $(BUILD)/host/guide_setting_test $(BUILD)/host/decoder_test \
-		$(BUILD)/host/map_state_test $(BUILD)/host/opt_in_test $(BUILD)/host/atlas_scale_test $(BUILD)/host/sps_info_test \
+		$(BUILD)/host/map_state_test $(BUILD)/host/opt_in_test $(BUILD)/host/nav_watch_test $(BUILD)/host/atlas_scale_test $(BUILD)/host/sps_info_test \
 		$(BUILD)/host/picture_pace_test
 # The control socket (accept4) and the producer (pipe2) are Linux's: built and run on Linux only
 # (make test-x86).
@@ -262,6 +262,10 @@ $(BUILD)/host/opt_in_test: test/opt_in_test.cpp src/opt_in.cpp src/opt_in.h $(CR
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -Isrc -I$(CR)/src -o $@ test/opt_in_test.cpp src/opt_in.cpp $(CR)/src/config.cpp $(CR)/src/log.cpp -lpthread
 
+$(BUILD)/host/nav_watch_test: test/nav_watch_test.cpp src/nav_watch.cpp src/nav_watch.h $(CR)/src/log.cpp
+	mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -Isrc -I$(CR)/src -o $@ test/nav_watch_test.cpp src/nav_watch.cpp $(CR)/src/log.cpp -lpthread
+
 # ---- target binary (in Docker) --------------------------------------------
 target:
 	$(DOCKER_IMAGE)
@@ -321,8 +325,13 @@ $(T)/stub/libias-media_transport-avb_ufipc_bridge.so.1: abi/libias_avb.symbols
 	$(PYTHON) $(CR)/tools/ramses_abi.py stub-source $< > $(@D)/ias_avb_stub.c
 	gcc -shared -Wl,-soname,libias-media_transport-avb_ufipc_bridge.so.1 -o $@ $(@D)/ias_avb_stub.c
 
+$(T)/stub/libvsomeip3.so.3: $(CR)/dcsm/abi/libvsomeip3.so.3.symbols
+	mkdir -p $(@D)
+	$(PYTHON) $(CR)/dcsm/tools/abi.py stub $< $(@D)/vsomeip_stub.S
+	g++ -shared -nostdlib -Wl,-soname,libvsomeip3.so.3 -o $@ $(@D)/vsomeip_stub.S
+
 STUBS = $(T)/stub/libmfxhw64.so $(T)/stub/libva.so.1 $(T)/stub/libva-drm.so.1 \
-        $(T)/stub/libias-media_transport-avb_ufipc_bridge.so.1
+        $(T)/stub/libias-media_transport-avb_ufipc_bridge.so.1 $(T)/stub/libvsomeip3.so.3
 
 # Each source compiles once, in parallel, with its header dependencies.
 WOC_FLAGS = $(CXXFLAGS) $(CPPFLAGS) -DWOC_VERSION='"$(VERSION)"' -pthread

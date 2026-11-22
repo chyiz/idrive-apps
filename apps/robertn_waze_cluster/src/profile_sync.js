@@ -328,6 +328,9 @@ class ProfileSync extends EventEmitter {
             hud.hud_keep_shown = on(s.hud_keep_shown);
         }
         const cmds = shows.map((d) => ({ cmd: d, on: on(s[d]) })).concat([hud]);
+        if (s.map_mode === 0 || s.map_mode === 1 || s.map_mode === 2) {
+            cmds.push({ cmd: 'mode', mode: String(s.map_mode) });
+        }
         const c = this._control;
         if (c && c.render && c.render.connected()) {
             cmds.forEach((m) => c.render.send(m));

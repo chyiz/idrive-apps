@@ -1699,6 +1699,37 @@ int main()
     ok("and a move then is taken as asked", none.status("decode").hud_offset_x == 40);
     }
 
+    {   /* ---- when the map shows: Always (0), Phone nav only (1), Yield to BMW nav (2) ---- */
+    FeedConfig mfc;
+    mfc.socket = "/tmp/woc-feed-mode-" + std::to_string(getpid()) + ".sock";
+    MapFeeds mf(mfc, true, true, 10, 1);
+    ok("mode 1 before stream: cluster/hud gated, wants_frames false, status idle",
+       !mf.cluster() && !mf.hud_feed() && !mf.wants_frames() && mf.status("decode").map_mode == 1 &&
+           mf.status("decode").state == "idle" && mf.status("decode").reason.empty() &&
+           mf.status("decode").hud_state == "idle" && mf.status("decode").cluster && mf.status("decode").hud);
+    mf.set_stream(true, false, Picture::Shown);
+    ok("mode 1 stream live without phone nav: waiting for phone navigation",
+       !mf.wants_frames() && mf.status("decode").reason == "Waiting for phone navigation" &&
+           mf.status("decode").hud_state == "waiting_nav");
+    mf.set_nav(true, false);
+    ok("mode 1 phone nav starts: feeds come up at once",
+       mf.cluster() != nullptr && mf.hud_feed() != nullptr && mf.wants_frames() && mf.status("decode").phone_nav);
+    mf.set_nav(false, false);
+    ok("mode 1 phone nav ends: feeds drop back to stock map",
+       !mf.cluster() && !mf.hud_feed() && !mf.wants_frames() && !mf.status("decode").phone_nav);
+    mf.set_mode(2);
+    ok("mode 2 (Yield to BMW navigation): feeds up while BMW nav is idle",
+       mf.cluster() != nullptr && mf.hud_feed() != nullptr && mf.wants_frames() && mf.status("decode").map_mode == 2);
+    mf.set_nav(false, true);
+    ok("mode 2 BMW nav starts: yields to BMW navigation",
+       !mf.cluster() && !mf.hud_feed() && !mf.wants_frames() &&
+           mf.status("decode").reason == "Yielding to BMW navigation" &&
+           mf.status("decode").hud_state == "yielding_bmw" && mf.status("decode").bmw_nav);
+    mf.set_mode(0);
+    ok("mode 0 (Always): shows even while BMW nav is active",
+       mf.cluster() != nullptr && mf.hud_feed() != nullptr && mf.wants_frames() && mf.status("decode").map_mode == 0);
+    }
+
     std::printf(failures ? "%d FAILED\n" : "all ok\n", failures);
     return failures ? 1 : 0;
 }

@@ -134,6 +134,9 @@ struct FeedStatus {
     unsigned hud_width_pct = 0;   /* the HUD map's size setting (0: the default) */
     int hud_offset_x = 0, hud_offset_y = 0;   /* and where it is moved to from the centre */
     bool hud_keep_shown = false;   /* the HUD map kept shown over the stock HMI's pop-ups */
+    unsigned map_mode = 0;         /* 0: always, 1: only when navigating on phone, 2: yield to BMW navigation */
+    bool phone_nav = false;        /* CarPlay or Android Auto route guidance active */
+    bool bmw_nav = false;          /* BMW built-in route guidance active */
 };
 
 /* Whether a status is worth a log line: its state, reason or target differs

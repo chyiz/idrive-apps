@@ -94,6 +94,12 @@
     "2.4 GHz": "2,4 GHz",
     "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Ses kesilebilir. iPhone'unuzda Wi-Fi'yi kapatıp açın.",
     "Own settings for this driver": "Bu sürücüye özel ayarlar",
-    "Keep HUD map over BMW's pop-ups": "HUD haritasını BMW açılır pencerelerinin üstünde tut"
+    "Keep HUD map over BMW's pop-ups": "HUD haritasını BMW açılır pencerelerinin üstünde tut",
+    "Show when": "Gösterim zamanı",
+    "Always": "Her zaman",
+    "Only when navigating on phone": "Yalnızca telefon navigasyonunda",
+    "Yield to BMW navigation": "BMW navigasyonuna yol ver",
+    "Waiting for phone navigation": "Telefon navigasyonu bekleniyor",
+    "Yielding to BMW navigation": "BMW navigasyonuna bırakıldı"
   }
 }

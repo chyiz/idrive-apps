@@ -98,14 +98,19 @@ is told (150-400 dpi, 180 by default; lower shows more map with smaller
 text), and **Hide phone's turn card** crops Google Maps' turn card off the
 top of the map. Each takes effect when aapd next starts.
 
-**When the map shows.** The map comes up in the cluster's central map slot
-at the stream's first non-blank picture and stays while the phone's
-cluster stream is live. When the stream ends, stays blank for `blank_ms`
+**When the map shows.** By default (**Show when: Always**), the map comes up
+in the cluster's central map slot at the stream's first non-blank picture and
+stays while the phone's cluster stream is live. With **Only when navigating on
+phone**, BMW's own map stays shown until a route starts on CarPlay or Android
+Auto, and returns when the route ends. With **Yield to BMW navigation**, the
+phone's map shows from connection except while BMW's built-in route guidance
+is active. When the stream ends, stays blank for `blank_ms`
 (10 s) or freezes for `freeze_ms` (10 s), the slot goes back to the
 cluster's own content until the next picture. The render runs from boot and
 decodes whether or not the map is shown, since the phone sends a keyframe
 only when its stream starts: a render that missed the start shows nothing
-until the phone reconnects.
+until the phone reconnects, and switching **Show when** or starting a route
+shows the map at once without restarting CarPlay.
 
 **BMW's turn box.** While the map shows, BMW's CarPlay turn-by-turn box on
 the cluster is hidden (cluster-render README, "Guide hold"). The app's
@@ -120,7 +125,7 @@ both, the HUD gets up to half the upload budget, only what it uses. The
 HUD map steps aside while BMW's HUD lists show (never for route guidance),
 unless **Keep HUD map over BMW's pop-ups** is ticked. **Own settings for
 this driver** gives the driver profile in use its own copy of these
-settings.
+settings, **Show when** included.
 
 **Inside another app's scene.** An app that shows a scene file on a target
 with `layers` 1 can host the map there (cluster-render PROTOCOL.md

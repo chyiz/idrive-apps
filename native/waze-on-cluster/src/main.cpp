@@ -43,6 +43,7 @@
 #include "block_pack.h"
 #include "map_feed.h"
 #include "map_feeds.h"
+#include "nav_link.h"
 #include "map_geometry.h"
 #include "map_state.h"
 #include "refused.h"
@@ -80,6 +81,8 @@ std::string status_line(const FeedStatus &s)
            ",\"hud_width_pct\":" + std::to_string(s.hud_width_pct) +
            ",\"hud_x\":" + std::to_string(s.hud_offset_x) + ",\"hud_y\":" + std::to_string(s.hud_offset_y) +
            ",\"hud_keep_shown\":" + (s.hud_keep_shown ? "1" : "0") +
+           ",\"map_mode\":" + std::to_string(s.map_mode) +
+           (s.phone_nav ? ",\"phone_nav\":1" : "") + (s.bmw_nav ? ",\"bmw_nav\":1" : "") +
            /* only while hosted: otherwise the line is as it always was */
            (s.hosted ? ",\"hosted\":1" : "") + "}";
 }
@@ -99,11 +102,20 @@ public:
         auto pct = msg.find("hud_width_pct");
         auto hx = msg.find("hud_x"), hy = msg.find("hud_y"), on = msg.find("on");
         auto keep = msg.find("hud_keep_shown");
+        auto mode = msg.find("mode");
+        auto phone_nav = msg.find("phone"), bmw_nav = msg.find("bmw");
         if (cmd == "guide" && hide != msg.end() && guide_->set(hide->second)) {
             log_info("guide: BMW's turn box %s while the map shows", guide_->hide() ? "hidden" : "shown");
             feeds_->set_guide_hold(guide_->hide());
         } else if (cmd == "cluster" && on != msg.end() && (on->second == "0" || on->second == "1")) {
             feeds_->set_cluster(on->second == "1");
+        } else if (cmd == "mode" && mode != msg.end() &&
+                   (mode->second == "0" || mode->second == "1" || mode->second == "2")) {
+            feeds_->set_mode((unsigned)(mode->second[0] - '0'));
+        } else if (cmd == "nav" && phone_nav != msg.end() && bmw_nav != msg.end() &&
+                   (phone_nav->second == "0" || phone_nav->second == "1") &&
+                   (bmw_nav->second == "0" || bmw_nav->second == "1")) {
+            feeds_->set_nav(phone_nav->second == "1", bmw_nav->second == "1");
         } else if (cmd == "hud" && (on != msg.end() || pct != msg.end() || hx != msg.end() || hy != msg.end() ||
                                     keep != msg.end())) {
             if (on != msg.end()) {
@@ -205,7 +217,7 @@ int serve(Config cfg)
         {"cluster", 0, 1},          {"hud", 0, 1},                   {"hud_fps", 1, 30},
         {"hud_width_pct", 0, 100},  {"hud_offset_x", -800, 800},     {"hud_offset_y", -800, 800},
         {"hud_scale_down", 0, 1},   {"hud_round_corners", 0, 1},     {"hud_black_background", 0, 1},
-        {"hud_keep_shown", 0, 1},
+        {"hud_keep_shown", 0, 1},   {"map_mode", 0, 2},
         {"freeze_ms", 0, 600000},   {"freeze_min_fps", 1, 60},       {"alt_screen_port", 0, 65535},
         {"idle_ms", 1000, 600000},  {"blank_ms", 1000, 600000},
         {"alt_screen_uid", 0, 4294967294L}, {"gpu_copy", 0, 1},   {"hosted_vpp_scale", 0, 1},
@@ -290,13 +302,17 @@ int serve(Config cfg)
 
     std::string err;
     VideoProducer producer(vc);
-    MapFeeds feed(fc, cfg.num("cluster") == 1, cfg.num("hud") == 1, (unsigned)cfg.num("hud_fps"));
+    MapFeeds feed(fc, cfg.num("cluster") == 1, cfg.num("hud") == 1, (unsigned)cfg.num("hud_fps"),
+                  (unsigned)cfg.num("map_mode"));
+    NavLink nav;
+    nav.start(load_nav_schema(cfg.str("someip_interfaces")), cfg.str("vsomeip_app"));
     Server server(&feed, &guide);
     Control control(&server);
     server.set_control(&control);
     if (!control.listen(cfg.str("socket_path"), (unsigned)std::strtoul(cfg.str("socket_mode").c_str(), nullptr, 8),
                         cfg.str("socket_group"), &err)) {
         log_error("%s", err.c_str());
+        nav.stop();
         return 1;
     }
 
@@ -313,12 +329,15 @@ int serve(Config cfg)
     for (;;) {
         std::vector<pollfd> p = {{sig_fd, POLLIN, 0}, {control.listen_fd(), POLLIN, 0}, {control.owner_fd(), POLLIN, 0},
                                  {producer.ready_fd(), POLLIN, 0}};
+        const int nav_idx = nav.fd() >= 0 ? (int)p.size() : -1;
+        if (nav_idx >= 0)
+            p.push_back(pollfd{nav.fd(), POLLIN, 0});
         feed.poll_fds(&p);   /* one per target's renderer connection */
         /* A decoded frame wakes it (the producer's ready fd), and so does the
-         * renderer's socket, and a scaled frame to take or the next one due
-         * (the HUD's, or a hosted map's); four times a second otherwise, so
-         * the client retries its connection, a source that is down is
-         * retried and the status files stay current. */
+         * renderer's socket, vsomeip route guidance, and a scaled frame to take
+         * or the next one due (the HUD's, or a hosted map's); four times a
+         * second otherwise, so the client retries its connection, a source
+         * that is down is retried and the status files stay current. */
         const int64_t wake = feed.wake_in_ms(now_ms());
         int n = poll(p.data(), p.size(), wake >= 0 && wake < 250 ? (int)wake : 250);
         if (n < 0 && errno != EINTR)
@@ -329,6 +348,11 @@ int serve(Config cfg)
             control.on_owner_readable();
         if (p[1].revents & POLLIN)
             control.on_listen_readable();
+        if (nav_idx >= 0 && (p[nav_idx].revents & POLLIN)) {
+            NavState ns;
+            if (nav.drain(&ns))
+                feed.set_nav(ns.phone, ns.bmw);
+        }
         const int64_t now = now_ms();
         uint64_t id = 0;
         bool same = false;
@@ -422,6 +446,7 @@ int serve(Config cfg)
             last_status_write = now;
         }
     }
+    nav.stop();
     log_info("stopped");
     return 0;
 }
@@ -515,6 +540,7 @@ void define_keys(Config *cfg)
     cfg->define("features_file", "/var/opt/waze-on-cluster/features.conf");
     cfg->define("cluster", "1");
     cfg->define("hud", "0");
+    cfg->define("map_mode", "0");
     cfg->define("hud_fps", "10");
     cfg->define("hud_width_pct", "0");
     cfg->define("hud_offset_x", "0");
@@ -524,6 +550,8 @@ void define_keys(Config *cfg)
     cfg->define("hud_round_corners", "1");
     cfg->define("hud_black_background", "1");
     cfg->define("render_socket", "/dev/shm/cluster-render/render.sock");
+    cfg->define("vsomeip_app", "waze-on-cluster");
+    cfg->define("someip_interfaces", "/etc/oap/someip/someip-interfaces.json");
     cfg->define("log_file", "/var/opt/waze-on-cluster/log/waze-on-cluster.log");
     cfg->define("log_file_kb", "512");
 }

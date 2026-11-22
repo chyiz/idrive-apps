@@ -219,6 +219,8 @@ void VideoProducer::decode_loop()
 
 int VideoProducer::late_wait_ms() const
 {
+    if (resume_picture_.load() && pictures_.load())
+        return 0;
     if (!picture_fps_.load() && !paced_.load())
         return 500;
     std::lock_guard<std::mutex> lock(decode_mutex_);
@@ -227,13 +229,17 @@ int VideoProducer::late_wait_ms() const
 
 void VideoProducer::picture_paced()
 {
-    if (!picture_fps_.load() && !paced_.load())
+    const bool want_resume = resume_picture_.load() && pictures_.load();
+    if (!want_resume && !picture_fps_.load() && !paced_.load())
         return;
     std::lock_guard<std::mutex> lock(decode_mutex_);
-    if (!paced_ || pace_.late_in_ms(cld::now_ms()) > 0)
+    const bool resume = resume_picture_.exchange(false) && pictures_.load();
+    const bool paced = paced_ && (resume || pace_.late_in_ms(cld::now_ms()) <= 0);
+    if (!resume && !paced)
         return;
     pass_part();
-    paced_ = false;
+    if (paced)
+        paced_ = false;
     bool given = false;
     if (pictures_.load()) {
         if (resumed_.load()) {
@@ -254,7 +260,7 @@ void VideoProducer::picture_paced()
             decode_errs_++;
         }
     }
-    if (!given)
+    if (paced && !given)
         paced_total_++;
 }
 
@@ -363,6 +369,7 @@ void VideoProducer::decode(const uint8_t *data, size_t len, bool end_of_au)
     catching_up_ = packet_ && packet_->later_frame;
     bool picture = !catching_up_ && pictures_.load();
     if (picture && resumed_.load()) {
+        resume_picture_ = false;
         decoder_.forget_last();   /* the feeds made since have not had it */
         pace_.reset();
     }
@@ -528,8 +535,11 @@ void VideoProducer::set_pictures(bool on)
 {
     if (on && !pictures_.exchange(true)) {
         resumed_ = true;
+        resume_picture_ = true;
+        queue_.wake();
         log_info("waze: the map shown again: pictures from the next frame");
     } else if (!on && pictures_.exchange(false)) {
+        resume_picture_ = false;
         log_info("waze: the map shown nowhere: frames decoded without a picture");
     }
 }

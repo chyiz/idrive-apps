@@ -12,12 +12,13 @@
  *
  *   Render control socket (RENDER_PATH)
  *     app  -> tool  {"cmd":"guide","hide":0|1}  BMW's turn box hidden while the map shows, or not
- *                   {"cmd":"cluster"|"hud","on":"0"|"1"}, {"cmd":"hud","hud_width_pct"|"hud_x","hud_y"|"hud_keep_shown"}
+ *                   {"cmd":"cluster"|"hud","on":"0"|"1"}, {"cmd":"hud","hud_width_pct"|"hud_x","hud_y"|"hud_keep_shown"},
+ *                   {"cmd":"mode","mode":"0"|"1"|"2"}
  *                    the map's settings (patchd saves them)
  *     tool -> app   {"ev":"status","state":"idle"|"starting"|"showing"|"frozen"|"error"|"unsupported",
  *                    "target","page","reason","hide_bmw_guidance","guide_disabled","cluster","hud",
- *                    "hud_state","hud_width_pct","hud_x","hud_y","hud_keep_shown"}
- *                   (hud_keep_shown 0|1, absent from a tool before it)
+ *                    "hud_state","hud_width_pct","hud_x","hud_y","hud_keep_shown","map_mode","phone_nav","bmw_nav"}
+ *                   (hud_keep_shown 0|1 and map_mode 0|1|2, absent from a tool before them)
  *                   (unsupported: the head unit refuses the tool, which stays idle)
  *                   (idle's reason: why a live stream shows no map; hide_bmw_guidance 0|1,
  *                    absent from a tool before the switch; guide_disabled 1: the cluster
@@ -108,6 +109,8 @@ const HUD_MIN_PCT = 30, HUD_MAX_PCT = 85, HUD_STEP_PCT = 5, HUD_STANDARD_PCT = 5
 const HUD_SIZE_STEPS = (HUD_MAX_PCT - HUD_MIN_PCT) / HUD_STEP_PCT;
 /* Where the map can show, the choices in their order on the page. */
 const SHOWN_ON = ['cluster', 'hud', 'both', 'off'];
+/* When the map shows while the phone streams it, in their order on the page. */
+const MAP_MODES = ['always', 'phone_nav', 'yield_bmw'];
 /* The HUD map moved from its centre, HUD_MOVE_PX a press, within +-HUD_MOVE_MAX; the render holds it inside the
  * HUD and reports the offset as far as it went. An asked size or place shows until the render's status has it,
  * HUD_ASKED_MS has passed, the render reconnects or patchd fails to save the size; then the render's own. */
@@ -305,6 +308,7 @@ class WazeClusterControl extends EventEmitter {
         const reset = () => {
             this.renderStatus = null;
             this._askedShownOn = null;
+            this._askedMapMode = null;
             this._clearAskedHud();
             this.emit('change');
         };
@@ -413,6 +417,30 @@ class WazeClusterControl extends EventEmitter {
         this.emit('change');
     }
 
+    /* ---- when the map shows: Always, Only when navigating on phone, Yield to BMW navigation ---- */
+    mapMode() {
+        if (this._askedMapMode) {
+            return this._askedMapMode;
+        }
+        const m = this.renderStatus && this.renderStatus.map_mode;
+        return m === 0 || m === 1 || m === 2 ? MAP_MODES[m] : null;
+    }
+
+    canChooseMode() {
+        return this.canChooseShownOn() && this.shownOn() !== 'off' && this.mapMode() !== null;
+    }
+
+    setMapMode(choice) {
+        const idx = MAP_MODES.indexOf(choice);
+        if (idx < 0 || !this.canChooseMode() || choice === this.mapMode()) {
+            return;
+        }
+        this._askedMapMode = choice;
+        this.render.send({ cmd: 'mode', mode: String(idx) });
+        this.patch.send({ cmd: 'map-mode', mode: idx });
+        this.emit('change');
+    }
+
     /* True while cluster-render's mapping guard keeps the HUD off. */
     hudDisabled() {
         const rs = this.renderStatus;
@@ -443,6 +471,10 @@ class WazeClusterControl extends EventEmitter {
             return t('Error');
         case 'frozen':
             return t('Frozen');
+        case 'waiting_nav':
+            return t('Waiting for phone navigation');
+        case 'yielding_bmw':
+            return t('Yielding to BMW navigation');
         case 'off':
             return t('Off');
         default:
@@ -677,7 +709,9 @@ class WazeClusterControl extends EventEmitter {
         case 'unsupported':
             return t('Unavailable');
         default:
-            return (rs && rs.reason) || t('Waiting for the phone');
+            return rs && rs.reason === 'Waiting for phone navigation' ? t('Waiting for phone navigation')
+                : rs && rs.reason === 'Yielding to BMW navigation' ? t('Yielding to BMW navigation')
+                : (rs && rs.reason) || t('Waiting for the phone');
         }
     }
 
@@ -1036,6 +1070,9 @@ class WazeClusterControl extends EventEmitter {
             if (this._askedShownOn && this._askedShownOn === shownOnOf(msg)) {
                 this._askedShownOn = null;
             }
+            if (this._askedMapMode && MAP_MODES[msg.map_mode] === this._askedMapMode) {
+                this._askedMapMode = null;
+            }
             if (this._askedHud != null && msg.hud_width_pct === this._askedHud) {
                 this._clearAskedHud();
             }
@@ -1059,7 +1096,7 @@ class WazeClusterControl extends EventEmitter {
             this._noteCardAsked(msg);
             this._wake();
             this.emit('change');
-        } else if (/^(cluster|hud|hud-size|hud-pos|hud-keep-shown)-reply$/.test(msg.ev)) {
+        } else if (/^(cluster|hud|hud-size|hud-pos|hud-keep-shown|map-mode)-reply$/.test(msg.ev)) {
             if (!msg.ok) {
                 this._log.info(`patchd did not save the setting: ${msg.reason || 'refused'}`);
             }
@@ -1084,5 +1121,5 @@ class WazeClusterControl extends EventEmitter {
 module.exports = {
     WazeClusterControl, LineSocket,
     RENDER_PATH, PATCH_PATH, PENDING_PATH, AA_PENDING_PATH, BOOT_ID_PATH,
-    SIZE, SAFE, ZOOM_STEP, RESTART_FAILED, SHOWN_ON, HUD_SIZE_STEPS
+    SIZE, SAFE, ZOOM_STEP, RESTART_FAILED, SHOWN_ON, MAP_MODES, HUD_SIZE_STEPS
 };

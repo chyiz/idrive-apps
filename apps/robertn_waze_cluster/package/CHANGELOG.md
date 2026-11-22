@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+**Show when** in General chooses when the map shows: **Always** (the default,
+whenever the phone sends it), **Only when navigating on phone** (keeps BMW's
+map until a route starts on CarPlay or Android Auto, and comes back to BMW's
+map when the route ends), or **Yield to BMW navigation** (shows the phone's
+map from connection, except while BMW's built-in route guidance is active).
+The choice takes effect at once without the app staying open, and **Own
+settings for this driver** keeps it per driver profile.
+
 ## 0.6.12
 
 The cluster's safe area is back to 504x368 at (286, 72); a smaller area made

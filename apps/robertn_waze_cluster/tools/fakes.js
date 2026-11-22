@@ -131,6 +131,11 @@ class FakeRender extends LineServer {
         this.hudState = null;
         /* the HUD map kept shown over BMW's pop-ups (null: a tool without the field) */
         this.hudKeep = 0;
+        /* when the map shows (0 always, 1 phone nav, 2 yield BMW; null: a tool without it) */
+        this.mapMode = 0;
+        this.phoneNav = 0;
+        this.bmwNav = 0;
+        this.singleOwner = false;
         this._showTimer = null;
     }
 
@@ -150,12 +155,24 @@ class FakeRender extends LineServer {
     }
 
     _status() {
-        const s = { ev: 'status', state: this.state, target: this.target, page: this.page, reason: this.reason };
+        const gated = (this.mapMode === 1 && !this.phoneNav) || (this.mapMode === 2 && !!this.bmwNav);
+        const live = this.state !== 'idle';
+        const state = gated && this.cluster ? 'idle' : this.state;
+        const reason = gated && this.cluster
+            ? (this.mapMode === 1 ? (live ? 'Waiting for phone navigation' : '') : 'Yielding to BMW navigation')
+            : this.reason;
+        const s = { ev: 'status', state, target: this.target, page: gated ? null : this.page, reason };
         /* hud null: a tool without the HUD's fields (one refused by its head unit) */
         if (this.hud !== null) {
-            Object.assign(s, { cluster: this.cluster, hud: this.hud, hud_state: this.hud ? this.hudState || this.state : 'off',
+            const hudState = !this.hud ? 'off'
+                : gated ? (this.mapMode === 1 ? (live ? 'waiting_nav' : 'idle') : 'yielding_bmw')
+                : this.hudState || this.state;
+            Object.assign(s, { cluster: this.cluster, hud: this.hud, hud_state: hudState,
                 hud_width_pct: this.hudWidth || 0, hud_x: this.hudX || 0, hud_y: this.hudY || 0 });
             if (this.hudKeep !== null) s.hud_keep_shown = this.hudKeep;
+            if (this.mapMode !== null) s.map_mode = this.mapMode;
+            if (this.phoneNav) s.phone_nav = 1;
+            if (this.bmwNav) s.bmw_nav = 1;
         }
         if (this.hide !== null) {
             s.hide_bmw_guidance = this.hide;
@@ -173,6 +190,13 @@ class FakeRender extends LineServer {
     }
 
     _onConnect(socket) {
+        if (this.singleOwner && this._clients.size > 1) {
+            this._clients.delete(socket);
+            socket.removeAllListeners('data');
+            this._send(socket, { ev: 'status', state: 'error', target: null, page: null, reason: 'busy' });
+            socket.end();
+            return;
+        }
         this._send(socket, this._status());
         this.backlog.forEach((line) => this._send(socket, { ev: 'log', line }));
     }
@@ -191,6 +215,15 @@ class FakeRender extends LineServer {
         }
         if (msg.cmd === 'cluster' && msg.on !== undefined) {
             this.cluster = Number(msg.on);
+            this._broadcast(this._status());
+        }
+        if (msg.cmd === 'mode' && this.mapMode !== null && (msg.mode === '0' || msg.mode === '1' || msg.mode === '2')) {
+            this.mapMode = Number(msg.mode);
+            this._broadcast(this._status());
+        }
+        if (msg.cmd === 'nav' && msg.phone !== undefined && msg.bmw !== undefined) {
+            this.phoneNav = Number(msg.phone);
+            this.bmwNav = Number(msg.bmw);
             this._broadcast(this._status());
         }
         if (msg.cmd === 'hud') {
@@ -229,7 +262,7 @@ class FakePatch extends LineServer {
         this.mute = false;         /* commands received and not answered */
         this.holdAa = false;       /* an Android Auto change stays busy until releaseAa(failure) */
         this.releaseAa = null;
-        this.map = { cluster: 1, hud: 0, hud_width_pct: 0, hud_offset_x: 0, hud_offset_y: 0, hud_keep_shown: 0 };
+        this.map = { cluster: 1, hud: 0, hud_width_pct: 0, hud_offset_x: 0, hud_offset_y: 0, hud_keep_shown: 0, map_mode: 0 };
         this.shared = null;
         this.own = {};
         this.active = null;
@@ -308,9 +341,10 @@ class FakePatch extends LineServer {
             return;
         }
         const MAP = { cluster: ['cluster'], hud: ['hud'], 'hud-size': ['hud_width_pct'], 'hud-pos': ['hud_offset_x', 'hud_offset_y'],
-            'hud-keep-shown': ['hud_keep_shown'] };
+            'hud-keep-shown': ['hud_keep_shown'], 'map-mode': ['map_mode'] };
         if (MAP[msg.cmd]) {
-            const v = msg.cmd === 'hud-pos' ? [msg.hud_x, msg.hud_y] : [msg.cmd === 'hud-size' ? msg.hud_width_pct : msg.on];
+            const v = msg.cmd === 'hud-pos' ? [msg.hud_x, msg.hud_y]
+                : [msg.cmd === 'hud-size' ? msg.hud_width_pct : msg.cmd === 'map-mode' ? msg.mode : msg.on];
             this.map = Object.assign({}, this.map);
             MAP[msg.cmd].forEach((k, i) => { this.map[k] = v[i]; });
             return;

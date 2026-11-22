@@ -94,6 +94,12 @@
     "2.4 GHz": "2,4 GHz",
     "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Lyden kan falle ut. Slå Wi-Fi av og på igjen på iPhone.",
     "Own settings for this driver": "Egne innstillinger for denne føreren",
-    "Keep HUD map over BMW's pop-ups": "Behold kart i HUD over BMWs popup-vinduer"
+    "Keep HUD map over BMW's pop-ups": "Behold kart i HUD over BMWs popup-vinduer",
+    "Show when": "Vis når",
+    "Always": "Alltid",
+    "Only when navigating on phone": "Kun ved navigasjon på telefon",
+    "Yield to BMW navigation": "Vik for BMW-navigasjon",
+    "Waiting for phone navigation": "Venter på telefonnavigasjon",
+    "Yielding to BMW navigation": "Viker for BMW-navigasjon"
   }
 }

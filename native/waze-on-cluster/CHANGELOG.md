@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+The map can show whenever the phone streams it (**Always**, the default),
+only while a route is active on CarPlay or Android Auto (**Only when
+navigating on phone**), or whenever BMW's own route guidance is not active
+(**Yield to BMW navigation**). Active route guidance is watched directly on the
+head unit's SOME/IP bus from boot so switching modes or starting and stopping a
+route switches the cluster and HUD map live without the app open or restarting
+CarPlay, and **Own settings for this driver** keeps the choice per driver
+profile.
+
 ## 0.13.0
 
 Android Auto's cluster map patch is applied in aapd's memory each time it

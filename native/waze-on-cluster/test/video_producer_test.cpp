@@ -254,6 +254,21 @@ static void off()
     }
     ok("off: every frame's picture at once", every);
     ok("off: none counted for picture_fps", p.take_paced() == 0);
+
+    /* Warm decode while pictures are off (e.g. gated by map_mode), then
+     * resumed with no new packet: the latest decoded surface becomes a whole
+     * picture immediately. */
+    p.set_pictures(false);
+    rtp.send(nullptr, false, 26);
+    rtp.send(nullptr, false, 27);
+    sleep_ms(60);
+    ok("off: frames decoded without a picture while hidden", !next_picture(p, 40).got);
+    const int64_t resumed_at = now_ms();
+    p.set_pictures(true);
+    const Picture resumed = next_picture(p, 500);
+    ok("off: resumed with a still map makes a picture at once from the latest surface",
+       resumed.got && !resumed.same && resumed.content == 27 && resumed.at - resumed_at < 300);
+    ok("off: resumed picture is not counted as picture_fps skip", p.take_paced() == 0);
 }
 
 /* hosted_vpp_scale: without set_part every frame whole; with it, from the

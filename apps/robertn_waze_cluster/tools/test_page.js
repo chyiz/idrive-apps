@@ -284,7 +284,7 @@ async function main() {
     const main = xmlIds('1').map(([id]) => [id, components[id].type, components[id].name, shipped(components[id])]);
     assert.deepStrictEqual(main.map(([id, type, name, text]) => (type === 'title' ? name : `${name} ${text}`)), [
         'wocTitle',
-        'wocHeadGeneral General', 'wocShowOn Show on: Cluster', 'wocProfile Own settings for this driver', 'wocMap Cluster map: Off', "wocGuide Hide BMW's turn box", 'wocLogs Logs',
+        'wocHeadGeneral General', 'wocShowOn Show on: Cluster', 'wocMapMode Show when: Always', 'wocProfile Own settings for this driver', 'wocMap Cluster map: Off', "wocGuide Hide BMW's turn box", 'wocLogs Logs',
         'wocHeadHud HUD', 'wocHud HUD map: \u2014', "wocHudKeep Keep HUD map over BMW's pop-ups", 'wocHudSize Size: \u2014', 'wocHudPos Position: \u2014', 'wocHudLeft Move left',
         'wocHudRight Move right', 'wocHudUp Move up', 'wocHudDown Move down', 'wocHudCentre Centre',
         'wocHeadCarPlay CarPlay', 'wocStatus Status: Connecting…', 'wocEnable Patch', 'wocDisable Remove patch', 'wocWifi ', 'wocWifiHint ',
@@ -308,9 +308,11 @@ async function main() {
     assert(!main.some(([, , name]) => /^wocRow|^wocSetup|^wocCapture/.test(name)), 'no log rows, setup line or capture on the main page');
     assert.deepStrictEqual(['wocAaCard', 'wocGuide', 'wocProfile', 'wocHudKeep'].map((n) => widgets[n]), Array(4).fill('LT_CheckBox_1Row'),
         'the on/off settings are checkboxes');
-    assert.deepStrictEqual([widgets.wocShowOn, widgets.wocHudSize], ['LT_DropDownMenu_1Row_2Col3070', 'LT_Slider_LeftJustified_Fill_Steps'],
-        'where the map shows: a drop-down of four; the HUD\'s size: a slider');
+    assert.deepStrictEqual([widgets.wocShowOn, widgets.wocMapMode, widgets.wocHudSize],
+        ['LT_DropDownMenu_1Row_2Col3070', 'LT_DropDownMenu_1Row_2Col3070', 'LT_Slider_LeftJustified_Fill_Steps'],
+        'where and when the map shows: drop-downs; the HUD\'s size: a slider');
     assert.deepStrictEqual(components['62'].rows.map((r) => r.ItemText.value), ['Cluster', 'HUD (experimental)', 'Cluster and HUD (experimental)', 'Off']);
+    assert.deepStrictEqual(components['65'].rows.map((r) => r.ItemText.value), ['Always', 'Only when navigating on phone', 'Yield to BMW navigation']);
     assert.deepStrictEqual(['MinValue', 'MaxValue', 'NumberOfSteps'].map((k) => components['52'].rows[0][k].value), [0, HUD_SIZE_STEPS, HUD_SIZE_STEPS],
         'the slider: one step for each 5 %');
     /* every info row reads "Name: Value" */
@@ -549,6 +551,37 @@ async function main() {
         showOn.pick(0);
         await until('the cluster', () => render.cluster === 1 && showOn.shown() === 'Show on: Cluster');
         render.received.length = 0;
+        /* ---- Show when & native phone/BMW navigation status ---- */
+        const mapMode = byName.wocMapMode;
+        assert.strictEqual(mapMode.shown(), 'Show when: Always');
+        assert.strictEqual(mapMode.enabled, true);
+        await sleep(450);
+        mapMode.pick(1);
+        await until('mode 1 waiting for phone nav', () => render.mapMode === 1 &&
+            mapMode.shown() === 'Show when: Only when navigating on phone' &&
+            byName.wocMap.text === 'Cluster map: Waiting for phone navigation' &&
+            patch.map.map_mode === 1);
+        render.phoneNav = 1;
+        render._broadcast(render._status());
+        await until('phone nav active shows map', () => /^Cluster map: Showing/.test(byName.wocMap.text));
+        render.phoneNav = 0;
+        render._broadcast(render._status());
+        await until('phone nav ended returns to waiting', () => byName.wocMap.text === 'Cluster map: Waiting for phone navigation');
+        await sleep(450);
+        mapMode.pick(2);
+        await until('mode 2 shows phone map while BMW nav idle', () => render.mapMode === 2 &&
+            mapMode.shown() === 'Show when: Yield to BMW navigation' &&
+            /^Cluster map: Showing/.test(byName.wocMap.text) && patch.map.map_mode === 2);
+        render.bmwNav = 1;
+        render._broadcast(render._status());
+        await until('BMW nav active yields to BMW map', () => byName.wocMap.text === 'Cluster map: Yielding to BMW navigation');
+        render.bmwNav = 0;
+        render._broadcast(render._status());
+        await until('BMW nav ended restores phone map', () => /^Cluster map: Showing/.test(byName.wocMap.text));
+        await sleep(450);
+        mapMode.pick(0);
+        await until('back to Always', () => render.mapMode === 0 && mapMode.shown() === 'Show when: Always');
+        render.received.length = 0;
         console.log('ok   where the map shows: a drop-down, Cluster by default, each choice through the render and patchd, the HUD on first, ' +
             'Off for neither, the HUD\'s rows and the turn box greyed then; the HUD: off by default with its size and position greyed; ' +
             'the size slider, Position and Keep HUD map over BMW\'s pop-ups change it, the checkbox greyed for a render without it; ' +
@@ -676,7 +709,7 @@ async function main() {
             'only CarPlay Wi-Fi, its line and the restart\'s rows are shown and hidden');
         Object.values(components).filter((d) => !/^(wocRestart|wocWifi)/.test(d.name) && d.type !== 'title')
             .forEach((d) => assert.strictEqual(byName[d.name].visible, true, `${d.name} stays on the page`));
-        ['wocEnable', 'wocDisable', 'wocAaEnable', 'wocAaDisable', 'wocAaZoomOut', 'wocAaZoomIn', 'wocAaCard', 'wocGuide', 'wocShowOn', 'wocProfile', 'wocHudSize',
+        ['wocEnable', 'wocDisable', 'wocAaEnable', 'wocAaDisable', 'wocAaZoomOut', 'wocAaZoomIn', 'wocAaCard', 'wocGuide', 'wocShowOn', 'wocMapMode', 'wocProfile', 'wocHudSize',
             'wocHudLeft', 'wocHudCentre', 'wocHudKeep']
             .forEach((n) => assert.deepStrictEqual([...byName[n].enabledSeen].sort(), [false, true], `${n} greyed and enabled in place`));
         const valueRow = /^[A-Z][A-Za-z ]+: [A-Z0-9\u2014]/;

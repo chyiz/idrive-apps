@@ -1304,6 +1304,56 @@ test('logs: Save logs saves once, then lists the archive; the address and QR tex
     }
 });
 
+test('when the map shows: Always by default; phone nav only and Yield to BMW navigation through render and patchd, greyed while Off', async (render, patch) => {
+    const c = control();
+    c.open();
+    await until('connected', () => c.connectedRender() && c.connectedPatch());
+    patch.res = SIZE;
+    patch.safe = SAFE;
+    patch.announce('patched', 'high', null);
+    render.hud = 1;
+    render.stream(true);
+    await until('showing', () => c.mapMode() === 'always' && c.canChooseMode() && /^Cluster map: Showing/.test(c.mapText()) &&
+        c.hudText() === 'HUD map: Showing');
+    c.setMapMode('always');
+    c.setMapMode('bogus');
+    assert.deepStrictEqual(render.received, [], 'same or invalid mode sends nothing');
+
+    c.setMapMode('phone_nav');
+    assert.strictEqual(c.mapMode(), 'phone_nav', 'optimistic mode at once');
+    await until('waiting for phone nav', () => render.mapMode === 1 &&
+        c.mapText() === 'Cluster map: Waiting for phone navigation' &&
+        c.hudText() === 'HUD map: Waiting for phone navigation');
+    assert.deepStrictEqual(render.received.slice(-1), [{ cmd: 'mode', mode: '1' }]);
+    assert.deepStrictEqual(patch.received.filter((m) => m.cmd === 'map-mode'), [{ cmd: 'map-mode', mode: 1 }]);
+
+    render.phoneNav = 1;
+    render._broadcast(render._status());
+    await until('phone nav active shows map', () => /^Cluster map: Showing/.test(c.mapText()) && c.hudText() === 'HUD map: Showing');
+    render.phoneNav = 0;
+
+    c.setMapMode('yield_bmw');
+    await until('yield_bmw idle BMW shows map', () => render.mapMode === 2 && c.mapMode() === 'yield_bmw' &&
+        /^Cluster map: Showing/.test(c.mapText()) && c.hudText() === 'HUD map: Showing');
+    render.bmwNav = 1;
+    render._broadcast(render._status());
+    await until('BMW nav active yields', () => c.mapText() === 'Cluster map: Yielding to BMW navigation' &&
+        c.hudText() === 'HUD map: Yielding to BMW navigation');
+
+    c.showOn('off');
+    await until('off greys mode', () => c.shownOn() === 'off' && !c.canChooseMode());
+    const countBefore = render.count('mode');
+    c.setMapMode('always');
+    assert.strictEqual(render.count('mode'), countBefore, 'greyed while Off: nothing sent');
+
+    c.showOn('cluster');
+    await until('cluster back', () => c.shownOn() === 'cluster' && c.canChooseMode());
+    render.mapMode = null;
+    render._broadcast(render._status());
+    await until('older render without map_mode', () => c.mapMode() === null && !c.canChooseMode());
+    c.close();
+});
+
 async function main() {
     let failed = 0;
     for (const t of tests) {

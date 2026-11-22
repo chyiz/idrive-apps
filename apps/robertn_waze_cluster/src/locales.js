@@ -98,7 +98,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "قد ينقطع الصوت. على iPhone، أوقف Wi-Fi ثم شغّله.",
    "Own settings for this driver": "إعدادات خاصة لهذا السائق",
-   "Keep HUD map over BMW's pop-ups": "إبقاء خريطة HUD فوق النوافذ المنبثقة من BMW"
+   "Keep HUD map over BMW's pop-ups": "إبقاء خريطة HUD فوق النوافذ المنبثقة من BMW",
+   "Show when": "العرض عند",
+   "Always": "دائماً",
+   "Only when navigating on phone": "أثناء ملاحة الهاتف فقط",
+   "Yield to BMW navigation": "التنحي لملاحة BMW",
+   "Waiting for phone navigation": "بانتظار ملاحة الهاتف",
+   "Yielding to BMW navigation": "متنحٍ لملاحة BMW"
   }
  },
  {
@@ -198,7 +204,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Zvuk se může přerušovat. Na iPhonu vypněte a zapněte Wi-Fi.",
    "Own settings for this driver": "Vlastní nastavení pro tohoto řidiče",
-   "Keep HUD map over BMW's pop-ups": "Ponechat mapu na HUD přes vyskakovací okna BMW"
+   "Keep HUD map over BMW's pop-ups": "Ponechat mapu na HUD přes vyskakovací okna BMW",
+   "Show when": "Zobrazit když",
+   "Always": "Vždy",
+   "Only when navigating on phone": "Jen při navigaci v telefonu",
+   "Yield to BMW navigation": "Ustoupit navigaci BMW",
+   "Waiting for phone navigation": "Čekání na navigaci telefonu",
+   "Yielding to BMW navigation": "Ustoupeno navigaci BMW"
   }
  },
  {
@@ -298,7 +310,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Lyden kan falde ud. Slå Wi-Fi fra og til på din iPhone.",
    "Own settings for this driver": "Egne indstillinger for denne fører",
-   "Keep HUD map over BMW's pop-ups": "Behold kort i HUD over BMW's pop-ups"
+   "Keep HUD map over BMW's pop-ups": "Behold kort i HUD over BMW's pop-ups",
+   "Show when": "Vis når",
+   "Always": "Altid",
+   "Only when navigating on phone": "Kun ved navigation på telefon",
+   "Yield to BMW navigation": "Vig for BMW-navigation",
+   "Waiting for phone navigation": "Venter på telefonnavigation",
+   "Yielding to BMW navigation": "Viger for BMW-navigation"
   }
  },
  {
@@ -398,7 +416,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Der Ton kann aussetzen. Am iPhone WLAN aus- und wieder einschalten.",
    "Own settings for this driver": "Eigene Einstellungen für diesen Fahrer",
-   "Keep HUD map over BMW's pop-ups": "Karte im HUD vor BMW-Pop-ups behalten"
+   "Keep HUD map over BMW's pop-ups": "Karte im HUD vor BMW-Pop-ups behalten",
+   "Show when": "Anzeigen wenn",
+   "Always": "Immer",
+   "Only when navigating on phone": "Nur bei Telefon-Navigation",
+   "Yield to BMW navigation": "Für BMW-Navigation zurücktreten",
+   "Waiting for phone navigation": "Warten auf Telefon-Navigation",
+   "Yielding to BMW navigation": "Für BMW-Navigation zurückgestellt"
   }
  },
  {
@@ -498,7 +522,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Ο ήχος μπορεί να διακόπτεται. Στο iPhone, απενεργοποιήστε και ενεργοποιήστε ξανά το Wi-Fi.",
    "Own settings for this driver": "Δικές ρυθμίσεις για αυτόν τον οδηγό",
-   "Keep HUD map over BMW's pop-ups": "Διατήρηση χάρτη στο HUD πάνω από τα αναδυόμενα της BMW"
+   "Keep HUD map over BMW's pop-ups": "Διατήρηση χάρτη στο HUD πάνω από τα αναδυόμενα της BMW",
+   "Show when": "Εμφάνιση όταν",
+   "Always": "Πάντα",
+   "Only when navigating on phone": "Μόνο κατά την πλοήγηση τηλεφώνου",
+   "Yield to BMW navigation": "Παραχώρηση στην πλοήγηση BMW",
+   "Waiting for phone navigation": "Αναμονή πλοήγησης τηλεφώνου",
+   "Yielding to BMW navigation": "Παραχώρηση στην πλοήγηση BMW"
   }
  },
  {
@@ -598,7 +628,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "El audio puede cortarse. En tu iPhone, desactiva y vuelve a activar el Wi-Fi.",
    "Own settings for this driver": "Configuración propia para este conductor",
-   "Keep HUD map over BMW's pop-ups": "Mantener mapa en el HUD sobre ventanas emergentes de BMW"
+   "Keep HUD map over BMW's pop-ups": "Mantener mapa en el HUD sobre ventanas emergentes de BMW",
+   "Show when": "Mostrar cuando",
+   "Always": "Siempre",
+   "Only when navigating on phone": "Solo al navegar en el teléfono",
+   "Yield to BMW navigation": "Ceder a la navegación BMW",
+   "Waiting for phone navigation": "Esperando navegación del teléfono",
+   "Yielding to BMW navigation": "Cediendo a la navegación BMW"
   }
  },
  {
@@ -698,7 +734,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "El audio puede cortarse. En tu iPhone, desactiva y vuelve a activar la Wi-Fi.",
    "Own settings for this driver": "Ajustes propios para este conductor",
-   "Keep HUD map over BMW's pop-ups": "Mantener mapa en el HUD sobre ventanas emergentes de BMW"
+   "Keep HUD map over BMW's pop-ups": "Mantener mapa en el HUD sobre ventanas emergentes de BMW",
+   "Show when": "Mostrar cuando",
+   "Always": "Siempre",
+   "Only when navigating on phone": "Solo al navegar en el teléfono",
+   "Yield to BMW navigation": "Ceder a la navegación BMW",
+   "Waiting for phone navigation": "Esperando navegación del teléfono",
+   "Yielding to BMW navigation": "Cediendo a la navegación BMW"
   }
  },
  {
@@ -798,7 +840,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Ääni voi katkeilla. Laita iPhonen Wi-Fi pois ja takaisin päälle.",
    "Own settings for this driver": "Omat asetukset tälle kuljettajalle",
-   "Keep HUD map over BMW's pop-ups": "Pidä HUD-kartta BMW:n ponnahdusikkunoiden päällä"
+   "Keep HUD map over BMW's pop-ups": "Pidä HUD-kartta BMW:n ponnahdusikkunoiden päällä",
+   "Show when": "Näytä kun",
+   "Always": "Aina",
+   "Only when navigating on phone": "Vain puhelimen navigoidessa",
+   "Yield to BMW navigation": "Väistä BMW-navigointia",
+   "Waiting for phone navigation": "Odotetaan puhelimen navigointia",
+   "Yielding to BMW navigation": "Väistetään BMW-navigointia"
   }
  },
  {
@@ -898,7 +946,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Le son peut se couper. Sur votre iPhone, désactivez puis réactivez le Wi-Fi.",
    "Own settings for this driver": "Réglages propres à ce conducteur",
-   "Keep HUD map over BMW's pop-ups": "Garder la carte sur le HUD devant les fenêtres contextuelles BMW"
+   "Keep HUD map over BMW's pop-ups": "Garder la carte sur le HUD devant les fenêtres contextuelles BMW",
+   "Show when": "Afficher quand",
+   "Always": "Toujours",
+   "Only when navigating on phone": "Seulement en navigation téléphone",
+   "Yield to BMW navigation": "Céder à la navigation BMW",
+   "Waiting for phone navigation": "En attente du guidage téléphone",
+   "Yielding to BMW navigation": "Cède la place au guidage BMW"
   }
  },
  {
@@ -998,7 +1052,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Le son peut se couper. Sur votre iPhone, désactivez puis réactivez le Wi-Fi.",
    "Own settings for this driver": "Réglages propres à ce conducteur",
-   "Keep HUD map over BMW's pop-ups": "Garder la carte sur le HUD devant les pop-up BMW"
+   "Keep HUD map over BMW's pop-ups": "Garder la carte sur le HUD devant les pop-up BMW",
+   "Show when": "Afficher quand",
+   "Always": "Toujours",
+   "Only when navigating on phone": "Uniquement en navigation téléphone",
+   "Yield to BMW navigation": "Céder à la navigation BMW",
+   "Waiting for phone navigation": "En attente du guidage téléphone",
+   "Yielding to BMW navigation": "Cède la place au guidage BMW"
   }
  },
  {
@@ -1098,7 +1158,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "השמע עלול להיקטע. ב-iPhone, כבו את ה-Wi-Fi והפעילו אותו מחדש.",
    "Own settings for this driver": "הגדרות נפרדות לנהג זה",
-   "Keep HUD map over BMW's pop-ups": "השארת המפה ב-HUD מעל החלונות הקופצים של BMW"
+   "Keep HUD map over BMW's pop-ups": "השארת המפה ב-HUD מעל החלונות הקופצים של BMW",
+   "Show when": "הצגה כאשר",
+   "Always": "תמיד",
+   "Only when navigating on phone": "רק בניווט מהטלפון",
+   "Yield to BMW navigation": "פינוי לניווט BMW",
+   "Waiting for phone navigation": "ממתין לניווט מהטלפון",
+   "Yielding to BMW navigation": "מפנה מקום לניווט BMW"
   }
  },
  {
@@ -1198,7 +1264,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "A hang akadozhat. Az iPhone-on kapcsolja ki, majd be a Wi-Fi-t.",
    "Own settings for this driver": "Saját beállítások ennek a vezetőnek",
-   "Keep HUD map over BMW's pop-ups": "Térkép megtartása a HUD-on a BMW felugró ablakai felett"
+   "Keep HUD map over BMW's pop-ups": "Térkép megtartása a HUD-on a BMW felugró ablakai felett",
+   "Show when": "Mikor látszódjon",
+   "Always": "Mindig",
+   "Only when navigating on phone": "Csak telefonos navigációnál",
+   "Yield to BMW navigation": "Elsőbbség a BMW navigációnak",
+   "Waiting for phone navigation": "Várakozás telefonos navigációra",
+   "Yielding to BMW navigation": "Átadva a BMW navigációnak"
   }
  },
  {
@@ -1298,7 +1370,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Audio mungkin terputus. Di iPhone Anda, matikan lalu nyalakan Wi-Fi.",
    "Own settings for this driver": "Pengaturan sendiri untuk pengemudi ini",
-   "Keep HUD map over BMW's pop-ups": "Pertahankan peta di HUD di atas pop-up BMW"
+   "Keep HUD map over BMW's pop-ups": "Pertahankan peta di HUD di atas pop-up BMW",
+   "Show when": "Tampilkan saat",
+   "Always": "Selalu",
+   "Only when navigating on phone": "Hanya saat navigasi ponsel aktif",
+   "Yield to BMW navigation": "Beri jalan navigasi BMW",
+   "Waiting for phone navigation": "Menunggu navigasi ponsel",
+   "Yielding to BMW navigation": "Memberi jalan navigasi BMW"
   }
  },
  {
@@ -1398,7 +1476,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "L'audio potrebbe interrompersi. Sull'iPhone, disattiva e riattiva il Wi-Fi.",
    "Own settings for this driver": "Impostazioni proprie per questo conducente",
-   "Keep HUD map over BMW's pop-ups": "Mantieni la mappa sull'HUD sopra i pop-up BMW"
+   "Keep HUD map over BMW's pop-ups": "Mantieni la mappa sull'HUD sopra i pop-up BMW",
+   "Show when": "Mostra quando",
+   "Always": "Sempre",
+   "Only when navigating on phone": "Solo durante navigazione telefono",
+   "Yield to BMW navigation": "Cedi alla navigazione BMW",
+   "Waiting for phone navigation": "In attesa di navigazione telefono",
+   "Yielding to BMW navigation": "Ceduto alla navigazione BMW"
   }
  },
  {
@@ -1498,7 +1582,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "音声が途切れることがあります。iPhoneでWi-Fiをオフにしてからオンにしてください。",
    "Own settings for this driver": "このドライバー専用の設定",
-   "Keep HUD map over BMW's pop-ups": "HUDの地図をBMWのポップアップより優先"
+   "Keep HUD map over BMW's pop-ups": "HUDの地図をBMWのポップアップより優先",
+   "Show when": "表示タイミング",
+   "Always": "常時",
+   "Only when navigating on phone": "スマホの案内中のみ",
+   "Yield to BMW navigation": "BMWナビ案内中は譲る",
+   "Waiting for phone navigation": "スマホの案内開始待ち",
+   "Yielding to BMW navigation": "BMWナビを優先表示中"
   }
  },
  {
@@ -1598,7 +1688,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "오디오가 끊길 수 있습니다. iPhone에서 Wi-Fi를 껐다가 다시 켜십시오.",
    "Own settings for this driver": "이 운전자 전용 설정",
-   "Keep HUD map over BMW's pop-ups": "BMW 팝업 위에 HUD 지도 유지"
+   "Keep HUD map over BMW's pop-ups": "BMW 팝업 위에 HUD 지도 유지",
+   "Show when": "표시 조건",
+   "Always": "항상",
+   "Only when navigating on phone": "휴대폰 경로 안내 중에만",
+   "Yield to BMW navigation": "BMW 내비게이션 안내 시 양보",
+   "Waiting for phone navigation": "휴대폰 경로 안내 대기 중",
+   "Yielding to BMW navigation": "BMW 내비게이션에 양보 중"
   }
  },
  {
@@ -1698,7 +1794,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Lyden kan falle ut. Slå Wi-Fi av og på igjen på iPhone.",
    "Own settings for this driver": "Egne innstillinger for denne føreren",
-   "Keep HUD map over BMW's pop-ups": "Behold kart i HUD over BMWs popup-vinduer"
+   "Keep HUD map over BMW's pop-ups": "Behold kart i HUD over BMWs popup-vinduer",
+   "Show when": "Vis når",
+   "Always": "Alltid",
+   "Only when navigating on phone": "Kun ved navigasjon på telefon",
+   "Yield to BMW navigation": "Vik for BMW-navigasjon",
+   "Waiting for phone navigation": "Venter på telefonnavigasjon",
+   "Yielding to BMW navigation": "Viker for BMW-navigasjon"
   }
  },
  {
@@ -1800,7 +1902,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Het geluid kan wegvallen. Zet Wi-Fi op je iPhone uit en weer aan.",
    "Own settings for this driver": "Eigen instellingen voor deze bestuurder",
-   "Keep HUD map over BMW's pop-ups": "Kaart in HUD boven BMW-pop-ups houden"
+   "Keep HUD map over BMW's pop-ups": "Kaart in HUD boven BMW-pop-ups houden",
+   "Show when": "Tonen bij",
+   "Always": "Altijd",
+   "Only when navigating on phone": "Alleen bij telefoonnavigatie",
+   "Yield to BMW navigation": "Wijken voor BMW-navigatie",
+   "Waiting for phone navigation": "Wachten op telefoonnavigatie",
+   "Yielding to BMW navigation": "Wijkt voor BMW-navigatie"
   }
  },
  {
@@ -1900,7 +2008,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Dźwięk może się przerywać. Na iPhonie wyłącz i włącz Wi-Fi.",
    "Own settings for this driver": "Własne ustawienia dla tego kierowcy",
-   "Keep HUD map over BMW's pop-ups": "Zachowaj mapę na HUD nad wyskakującymi oknami BMW"
+   "Keep HUD map over BMW's pop-ups": "Zachowaj mapę na HUD nad wyskakującymi oknami BMW",
+   "Show when": "Pokaż gdy",
+   "Always": "Zawsze",
+   "Only when navigating on phone": "Tylko podczas nawigacji w telefonie",
+   "Yield to BMW navigation": "Ustąp nawigacji BMW",
+   "Waiting for phone navigation": "Oczekiwanie na nawigację telefonu",
+   "Yielding to BMW navigation": "Ustąpiono nawigacji BMW"
   }
  },
  {
@@ -2000,7 +2114,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "O áudio pode falhar. No iPhone, desative e ative o Wi-Fi.",
    "Own settings for this driver": "Configurações próprias para este motorista",
-   "Keep HUD map over BMW's pop-ups": "Manter mapa no HUD sobre pop-ups da BMW"
+   "Keep HUD map over BMW's pop-ups": "Manter mapa no HUD sobre pop-ups da BMW",
+   "Show when": "Mostrar quando",
+   "Always": "Sempre",
+   "Only when navigating on phone": "Somente ao navegar no celular",
+   "Yield to BMW navigation": "Ceder à navegação BMW",
+   "Waiting for phone navigation": "Aguardando navegação do celular",
+   "Yielding to BMW navigation": "Cedendo à navegação BMW"
   }
  },
  {
@@ -2100,7 +2220,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "O áudio pode falhar. No iPhone, desative e volte a ativar o Wi-Fi.",
    "Own settings for this driver": "Definições próprias para este condutor",
-   "Keep HUD map over BMW's pop-ups": "Manter mapa no HUD sobre pop-ups BMW"
+   "Keep HUD map over BMW's pop-ups": "Manter mapa no HUD sobre pop-ups BMW",
+   "Show when": "Mostrar quando",
+   "Always": "Sempre",
+   "Only when navigating on phone": "Apenas com navegação no telemóvel",
+   "Yield to BMW navigation": "Ceder à navegação BMW",
+   "Waiting for phone navigation": "A aguardar navegação do telemóvel",
+   "Yielding to BMW navigation": "A ceder à navegação BMW"
   }
  },
  {
@@ -2200,7 +2326,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Sunetul se poate întrerupe. Pe iPhone, dezactivați și reactivați Wi-Fi.",
    "Own settings for this driver": "Setări proprii pentru acest șofer",
-   "Keep HUD map over BMW's pop-ups": "Păstrare hartă pe HUD peste ferestrele pop-up BMW"
+   "Keep HUD map over BMW's pop-ups": "Păstrare hartă pe HUD peste ferestrele pop-up BMW",
+   "Show when": "Afișare când",
+   "Always": "Întotdeauna",
+   "Only when navigating on phone": "Doar în timpul navigării pe telefon",
+   "Yield to BMW navigation": "Cedează navigației BMW",
+   "Waiting for phone navigation": "Se așteaptă navigația telefonului",
+   "Yielding to BMW navigation": "Cedat navigației BMW"
   }
  },
  {
@@ -2300,7 +2432,13 @@ module.exports = [
    "2.4 GHz": "2,4 ГГц",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Звук может прерываться. На iPhone выключите и снова включите Wi-Fi.",
    "Own settings for this driver": "Свои настройки для этого водителя",
-   "Keep HUD map over BMW's pop-ups": "Оставлять карту на HUD поверх всплывающих окон BMW"
+   "Keep HUD map over BMW's pop-ups": "Оставлять карту на HUD поверх всплывающих окон BMW",
+   "Show when": "Показывать",
+   "Always": "Всегда",
+   "Only when navigating on phone": "Только при ведении с телефона",
+   "Yield to BMW navigation": "Уступать навигации BMW",
+   "Waiting for phone navigation": "Ожидание маршрута на телефоне",
+   "Yielding to BMW navigation": "Уступает навигации BMW"
   }
  },
  {
@@ -2400,7 +2538,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Zvuk sa môže prerušovať. Na iPhone vypnite a zapnite Wi-Fi.",
    "Own settings for this driver": "Vlastné nastavenia pre tohto vodiča",
-   "Keep HUD map over BMW's pop-ups": "Ponechať mapu na HUD nad kontextovými oknami BMW"
+   "Keep HUD map over BMW's pop-ups": "Ponechať mapu na HUD nad kontextovými oknami BMW",
+   "Show when": "Zobraziť keď",
+   "Always": "Vždy",
+   "Only when navigating on phone": "Len pri navigácii v telefóne",
+   "Yield to BMW navigation": "Ustúpiť navigácii BMW",
+   "Waiting for phone navigation": "Čakanie na navigáciu telefónu",
+   "Yielding to BMW navigation": "Ustúpené navigácii BMW"
   }
  },
  {
@@ -2500,7 +2644,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Zvok se lahko prekinja. Na iPhonu izklopite in vklopite Wi-Fi.",
    "Own settings for this driver": "Lastne nastavitve za tega voznika",
-   "Keep HUD map over BMW's pop-ups": "Ohrani zemljevid na HUD nad pojavnimi okni BMW"
+   "Keep HUD map over BMW's pop-ups": "Ohrani zemljevid na HUD nad pojavnimi okni BMW",
+   "Show when": "Prikaži ko",
+   "Always": "Vedno",
+   "Only when navigating on phone": "Samo med navigacijo na telefonu",
+   "Yield to BMW navigation": "Umakni se navigaciji BMW",
+   "Waiting for phone navigation": "Čakanje na navigacijo telefona",
+   "Yielding to BMW navigation": "Umaknjeno navigaciji BMW"
   }
  },
  {
@@ -2600,7 +2750,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Ljudet kan försvinna. Stäng av och slå på Wi-Fi på din iPhone.",
    "Own settings for this driver": "Egna inställningar för den här föraren",
-   "Keep HUD map over BMW's pop-ups": "Behåll karta i HUD över BMW:s popup-fönster"
+   "Keep HUD map over BMW's pop-ups": "Behåll karta i HUD över BMW:s popup-fönster",
+   "Show when": "Visa när",
+   "Always": "Alltid",
+   "Only when navigating on phone": "Endast vid telefonnavigering",
+   "Yield to BMW navigation": "Lämna plats åt BMW-navigering",
+   "Waiting for phone navigation": "Väntar på telefonnavigering",
+   "Yielding to BMW navigation": "Lämnar plats åt BMW-navigering"
   }
  },
  {
@@ -2700,7 +2856,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "เสียงอาจขาดหาย ให้ปิดแล้วเปิด Wi-Fi บน iPhone",
    "Own settings for this driver": "การตั้งค่าเฉพาะสำหรับผู้ขับขี่คนนี้",
-   "Keep HUD map over BMW's pop-ups": "คงแผนที่บน HUD ไว้เหนือป๊อปอัปของ BMW"
+   "Keep HUD map over BMW's pop-ups": "คงแผนที่บน HUD ไว้เหนือป๊อปอัปของ BMW",
+   "Show when": "แสดงเมื่อ",
+   "Always": "ตลอดเวลา",
+   "Only when navigating on phone": "เฉพาะขณะนำทางบนโทรศัพท์",
+   "Yield to BMW navigation": "หลีกทางให้นำทาง BMW",
+   "Waiting for phone navigation": "รอนำทางจากโทรศัพท์",
+   "Yielding to BMW navigation": "กำลังหลีกทางให้นำทาง BMW"
   }
  },
  {
@@ -2800,7 +2962,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Ses kesilebilir. iPhone'unuzda Wi-Fi'yi kapatıp açın.",
    "Own settings for this driver": "Bu sürücüye özel ayarlar",
-   "Keep HUD map over BMW's pop-ups": "HUD haritasını BMW açılır pencerelerinin üstünde tut"
+   "Keep HUD map over BMW's pop-ups": "HUD haritasını BMW açılır pencerelerinin üstünde tut",
+   "Show when": "Gösterim zamanı",
+   "Always": "Her zaman",
+   "Only when navigating on phone": "Yalnızca telefon navigasyonunda",
+   "Yield to BMW navigation": "BMW navigasyonuna yol ver",
+   "Waiting for phone navigation": "Telefon navigasyonu bekleniyor",
+   "Yielding to BMW navigation": "BMW navigasyonuna bırakıldı"
   }
  },
  {
@@ -2900,7 +3068,13 @@ module.exports = [
    "2.4 GHz": "2,4 ГГц",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Звук може перериватися. На iPhone вимкніть і знову ввімкніть Wi-Fi.",
    "Own settings for this driver": "Власні налаштування для цього водія",
-   "Keep HUD map over BMW's pop-ups": "Залишати карту на HUD поверх спливних вікон BMW"
+   "Keep HUD map over BMW's pop-ups": "Залишати карту на HUD поверх спливних вікон BMW",
+   "Show when": "Показувати",
+   "Always": "Завжди",
+   "Only when navigating on phone": "Лише під час навігації з телефону",
+   "Yield to BMW navigation": "Поступатися навігації BMW",
+   "Waiting for phone navigation": "Очікування навігації телефону",
+   "Yielding to BMW navigation": "Поступається навігації BMW"
   }
  },
  {
@@ -3000,7 +3174,13 @@ module.exports = [
    "2.4 GHz": "2,4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "Âm thanh có thể bị ngắt. Trên iPhone, hãy tắt rồi bật lại Wi-Fi.",
    "Own settings for this driver": "Cài đặt riêng cho người lái này",
-   "Keep HUD map over BMW's pop-ups": "Giữ bản đồ trên HUD phía trên cửa sổ bật lên của BMW"
+   "Keep HUD map over BMW's pop-ups": "Giữ bản đồ trên HUD phía trên cửa sổ bật lên của BMW",
+   "Show when": "Hiển thị khi",
+   "Always": "Luôn luôn",
+   "Only when navigating on phone": "Chỉ khi điện thoại dẫn đường",
+   "Yield to BMW navigation": "Nhường cho dẫn đường BMW",
+   "Waiting for phone navigation": "Đang chờ dẫn đường điện thoại",
+   "Yielding to BMW navigation": "Đang nhường dẫn đường BMW"
   }
  },
  {
@@ -3102,7 +3282,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "音频可能中断。请在 iPhone 上关闭再打开无线局域网。",
    "Own settings for this driver": "此驾驶员的专属设置",
-   "Keep HUD map over BMW's pop-ups": "HUD 地图保持在 BMW 弹窗之上"
+   "Keep HUD map over BMW's pop-ups": "HUD 地图保持在 BMW 弹窗之上",
+   "Show when": "显示时机",
+   "Always": "始终显示",
+   "Only when navigating on phone": "仅手机导航中",
+   "Yield to BMW navigation": "原车导航时让出",
+   "Waiting for phone navigation": "等待手机开始导航",
+   "Yielding to BMW navigation": "已让出给原车导航"
   }
  },
  {
@@ -3204,7 +3390,13 @@ module.exports = [
    "2.4 GHz": "2.4 GHz",
    "Audio may cut out. On your iPhone, turn Wi-Fi off and on.": "音訊可能中斷。請在 iPhone 上關閉再開啟 Wi-Fi。",
    "Own settings for this driver": "此駕駛的專屬設定",
-   "Keep HUD map over BMW's pop-ups": "HUD 地圖保持在 BMW 彈出視窗之上"
+   "Keep HUD map over BMW's pop-ups": "HUD 地圖保持在 BMW 彈出視窗之上",
+   "Show when": "顯示時機",
+   "Always": "始終顯示",
+   "Only when navigating on phone": "僅手機導航中",
+   "Yield to BMW navigation": "原廠導航時讓出",
+   "Waiting for phone navigation": "等待手機開始導航",
+   "Yielding to BMW navigation": "已讓出給原廠導航"
   }
  }
 ];
